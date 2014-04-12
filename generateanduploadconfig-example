@@ -1,0 +1,28 @@
+# Copy or rename this file to generateanduploadconfig
+contexts[0]=context01
+contexttitles[0]="Context01 title"
+contextdescriptions[0]="Context01 description"
+contextyoutubeemails[0]=context01@email.com
+contextyoutubepasswords[0]=context01pass
+contextyoutubekeywords[0]="webcam, timelapse"
+contextyoutubelocations[0]="47.67599,18.4935"
+contextyoutubeplaylistids[0]="aGggifGHJI54MGHNhthsI5z55ijGHIGHNhAT5"
+
+contexts[1]=context02
+contexttitles[1]="Context02 title"
+contextdescriptions[1]="Context02 description"
+contextyoutubeemails[1]=context02@email.com
+contextyoutubepasswords[1]=context02pass
+contextyoutubekeywords[1]="webcam, timelapse"
+contextyoutubelocations[1]="47.67599,18.4935"
+contextyoutubeplaylistids[0]="gjg5oHOMHIai5ij8gaI5gmgiiotgjtrGSAJI"
+
+# Where the context subdirs are stored.
+save_path=$scriptdir
+# Where to store video files before upload.
+videooutputdir="/tmp/ntimelapse-videos"
+# Where to store image sequence files before upload.
+tempimagesequencedir="/tmp/ntimelapse-imgseq"
+
+logfile=$scriptdir/generateandupload.log
+nlogrotatepath=/opt/nlogrotate

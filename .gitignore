@@ -2,3 +2,4 @@ upload-config.inc.php
 *.jpg
 *.mp3
 overlays
+generateanduploadconfig
