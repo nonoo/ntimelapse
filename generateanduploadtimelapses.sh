@@ -46,6 +46,7 @@ for idx in ${!contexts[*]}; do
 			--keywords="${contextyoutubekeywords[$idx]}" \
 			--location="${contextyoutubelocations[$idx]}" \
 			"$videooutputdir/$videofilename"`
+		echo "  adding $videourl to the context playlist"
 		youtube-upload --email=${contextyoutubeemails[$idx]} \
 			--password=${contextyoutubepasswords[$idx]} \
 			--add-to-playlist="http://gdata.youtube.com/feeds/api/playlists/${contextyoutubeplaylistids[$idx]}" \
