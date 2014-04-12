@@ -80,10 +80,8 @@
 	if (!@move_uploaded_file($_FILES[$upload_name]['tmp_name'], $dst))
 		handleerror('file could not be saved');
 
-	// Creating a symlink to the latest image.
-	$symlinkpath = "$save_path/$contextid.$file_extension";
-	@unlink($symlinkpath);
-	@symlink($dst, $symlinkpath);
+	// Creating a copy of the latest image.
+	copy($dst, "$save_path/$contextid.$file_extension");
 
 	// Generating a thumbnail.
 	if ($file_extension == 'jpg') {
