@@ -80,14 +80,14 @@
 	if (!@move_uploaded_file($_FILES[$upload_name]['tmp_name'], $dst))
 		handleerror('file could not be saved');
 
-	// Creating a copy of the latest image.
-	copy($dst, "$save_path/$contextid.$file_extension");
-
 	// Generating a thumbnail.
 	if ($file_extension == 'jpg') {
 		ntimelapse_addoverlay($dst, $contextid, date('Y/m/d  H:i:s', $_GET['d']) . '  UTC' . ntimelapse_gettemptext($contextid));
 		foreach ($thumbnail_heights as $height)
 			ntimelapse_generatethumbnail($dst, "$save_path/$contextid-$height-tn.jpg", $height);
+
+		// Creating a copy of the latest image.
+		copy($dst, "$save_path/$contextid.jpg");
 	}
 
 	echo 'ok';
