@@ -28,6 +28,7 @@
 		$overlay = imagecreatefrompng($overlaypath);
 		$img = imagecreatefromjpeg($dst);
 		imagecopy($img, $overlay, 0, 0, 0, 0, imagesx($img), imagesy($img));
+		imagefttext($img, $datetext_size[$contextid], 0, $datetext_xpos[$contextid]+1, $datetext_ypos[$contextid]+1, imagecolorallocate($img, 0, 0, 0), "$overlays_path/$contextid.ttf", $datetext);
 		imagefttext($img, $datetext_size[$contextid], 0, $datetext_xpos[$contextid], $datetext_ypos[$contextid], imagecolorallocate($img, 255, 255, 255), "$overlays_path/$contextid.ttf", $datetext);
 		imageinterlace($img, 1);
 		imagejpeg($img, $dst, 100);
