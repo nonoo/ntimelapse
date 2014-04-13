@@ -21,8 +21,13 @@ contextyoutubeplaylistids[0]="gjg5oHOMHIai5ij8gaI5gmgiiotgjtrGSAJI"
 save_path=$scriptdir
 # Where to store video files before upload.
 videooutputdir="/tmp/ntimelapse-videos"
-# Where to store image sequence files before upload.
+# Where to store image sequence files temorarily for creating the video.
 tempimagesequencedir="/tmp/ntimelapse-imgseq"
+# Where to store sound files temporarily for mixing.
+tempsounddir="/tmp/ntimelapse-sndseq"
+
+# Path of youtube-upload, which you can download from https://code.google.com/p/youtube-upload/
+youtubeuploadbinary=/usr/local/bin/youtube-upload
 
 logfile=$scriptdir/generateandupload.log
 nlogrotatepath=/opt/nlogrotate
