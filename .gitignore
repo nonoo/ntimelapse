@@ -3,3 +3,4 @@ upload-config.inc.php
 *.mp3
 overlays
 generateanduploadconfig
+log
