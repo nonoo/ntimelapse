@@ -88,6 +88,20 @@
 
 		// Creating a copy of the latest image.
 		copy($dst, "$save_path/$contextid.jpg");
+
+		if (isset($retranslate_urls[$contextid])) {
+			$ch = curl_init();
+			$fp = fopen($dst, 'r');
+			curl_setopt($ch, CURLOPT_URL, $retranslate_urls[$contextid] . $file_name);
+			curl_setopt($ch, CURLOPT_USERPWD, $retranslate_users[$contextid] . ':' . $retranslate_passwords[$contextid]);
+			curl_setopt($ch, CURLOPT_UPLOAD, 1);
+			curl_setopt($ch, CURLOPT_INFILE, $fp);
+			curl_setopt($ch, CURLOPT_INFILESIZE, filesize($dst));
+			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+		    curl_exec($ch);
+		    fclose($fp);
+		    curl_close($ch);
+		}
 	}
 
 	echo 'ok';

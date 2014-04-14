@@ -36,4 +36,9 @@
 	$tempdata_mysql_dbs = array('name1' => 'db1');
 	$tempdata_mysql_querys = array('name1' => 'select `temp-out` from `nweather` order by `date` desc limit 1');
 	$tempdata_format = '    %.2f °C';
+
+	// At the end, the uploaded image will be posted to the given URL with curl.
+	$retranslate_users = array('name1' => 'user1');
+	$retranslate_passwords = array('name1' => 'password1');
+	$retranslate_urls = array('name1' => 'ftp://ftp.something.com/');
 ?>
