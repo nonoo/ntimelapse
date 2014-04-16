@@ -1,5 +1,8 @@
 # Copy or rename this file to generateanduploadconfig
 contexts[0]=context01
+# If you want this context to get it's sound files from another directory,
+# specify this.
+contextgetsoundfromsubdir[0]=context01-snd
 contexttitles[0]="Context01 title"
 contextdescriptions[0]="Context01 description"
 contextyoutubeemails[0]=context01@email.com
@@ -9,6 +12,7 @@ contextyoutubelocations[0]="47.67599,18.4935"
 contextyoutubeplaylistids[0]="aGggifGHJI54MGHNhthsI5z55ijGHIGHNhAT5"
 
 contexts[1]=context02
+contextsoundgain[1]=20
 contexttitles[1]="Context02 title"
 contextdescriptions[1]="Context02 description"
 contextyoutubeemails[1]=context02@email.com

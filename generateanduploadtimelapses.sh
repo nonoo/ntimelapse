@@ -17,66 +17,89 @@ mkdir -p $tempimagesequencedir
 mkdir -p $tempsounddir
 
 for idx in ${!contexts[*]}; do
+#idx=2
 	echo "processing context ${contexts[$idx]}..."
 
-#	if [ ! -z "`ls $save_path/${contexts[$idx]}/*.mp3 2>/dev/null`" ]; then
+	contextsounddir=$save_path/${contexts[$idx]}
+	if [ ! -z "${contextgetsoundfromsubdir[$idx]}" ]; then
+		contextsounddir=$save_path/${contextgetsoundfromsubdir[$idx]}
+	fi
+
+#	if [ ! -z "`ls $contextsounddir/*.mp3 2>/dev/null`" ]; then
 	if [ 0 -eq 1 ]; then
 		echo "  sounds detected"
-		echo "    moving sounds from $save_path/${contexts[$idx]} to $tempsounddir"
-
 		numberofsoundfiles=0
-		for sndfile in `ls $save_path/${contexts[$idx]}/*.mp3`; do
-#			mv -f $imgfile $tempsounddir/`printf "%02d\n" $numberofsoundfiles`.mp3
-			cp -f $imgfile $tempsounddir/`printf "%02d\n" $numberofsoundfiles`.mp3
+		for srcfile in `ls $contextsounddir/*.mp3`; do
+			dstfile="$tempsounddir/`printf "%02d\n" $numberofsoundfiles`.wav"
+			echo "    decompressing $srcfile to $dstfile"
+			$lame --quiet --decode $srcfile $dstfile
 			numberofsoundfiles=$((numberofsoundfiles + 1))
+#			rm -f $srcfile
 		done
 
 		mkdir -p "$tempsounddir/faded"
 		filenum=1
-		for sndfile in `ls $tempsounddir/*.mp3`; do
+		for sndfile in `ls $tempsounddir/*.wav`; do
+			echo "    processing $sndfile..."
 			sndfilename=`basename $sndfile`
+
 		    length=`sox $sndfile -n stat 2>&1 | grep Length | awk '{ print $3 }' | cut -d'.' -f 1`
+		    echo "      length $length seconds"
+
+			if [ ! -z "${contextsoundgain[$idx]}" ]; then
+				echo "      adding gain of ${contextsoundgain[$idx]}..."
+				sox -q $sndfile "$tempsounddir/gained.wav" gain ${contextsoundgain[$idx]}
+				mv -f "$tempsounddir/gained.wav" $sndfile
+			fi
+
 		    if [ $filenum = 1 ]; then
-				echo "    fading the end of $sndfilename..."
+				echo "      fading the end of $sndfilename..."
 				sox -q $sndfile "$tempsounddir/faded/$sndfilename" fade t 0 $length $((length/4))
 			else
 				if [ $filenum = $numberofsoundfiles ]; then
-					echo "    fading the start, and padding $sndfilename..."
-					sox -q $sndfile "$tempsounddir/faded/$sndfilename" fade t $((length/4)) pad $(( (filenum-1)*($length-5) ))
+					echo "      fading the beginning of $sndfilename..."
+					sox -q $sndfile "$tempsounddir/faded/$sndfilename" fade t $((length/4))
 				else
-					echo "    fading and padding $sndfilename..."
-					sox -q $sndfile "$tempsounddir/faded/$sndfilename" fade t $((length/4)) $length pad $(( (filenum-1)*($length-5) ))
+					echo "      fading the beginning and the end of $sndfilename..."
+					sox -q $sndfile "$tempsounddir/faded/$sndfilename" fade t $((length/4)) $length
 				fi
+
+				# We are not using sox padding because it generates noise.
+				silencelength=$(( (filenum-1)*($length-5) ))
+				echo "      adding $silencelength seconds silence to the beginning of the file"
+				sox -n -r 48000 -c 2 -b 16 "$tempsounddir/silence.wav" trim 0.0 $silencelength
+				sox -q "$tempsounddir/silence.wav" "$tempsounddir/faded/$sndfilename" "$tempsounddir/faded.wav"
+				rm -f "$tempsounddir/silence.wav"
+				mv -f "$tempsounddir/faded.wav" "$tempsounddir/faded/$sndfilename"
 			fi
 			filenum=$((filenum + 1))
 		done
 
-		mkdir -p "$tempsounddir/mixed"
-		filenum=1
-		for sndfile in `ls $tempsounddir/faded/*.mp3`; do
-			$sndfilename=`basename ${sndfile/.mp3/}`
-			if [ ! -z "$mixwith" ]; then
-				echo "    mixing $mixwith.mp3 and $sndfilename.mp3"
-				if [ $filenum = 2 ]; then
-					sox -q -m $tempsounddir/faded/$mixwith.mp3 $tempsounddir/faded/$sndfilename.mp3 sounds/mixed/$mixwith$sndfilename.mp3
-				else
-					sox -q -m $tempsounddir/mixed/$mixwith.mp3 $tempsounddir/faded/$sndfilename.mp3 sounds/mixed/$mixwith$sndfilename.mp3
-				fi
-			fi
-			mixwith=$mixwith$sndfilename
-			filenum=$((filenum+1))
-		done
+		sndfilename="${contexts[$idx]}-`date +%Y-%m-%d -d 'yesterday'`"
+		echo "    mixing..."
+		sox -q -m $tempsounddir/faded/*.wav $tempsounddir/$sndfilename.wav
 		echo "    clearing $tempsounddir/faded/"
-		rm -r $tempsounddir/faded/*.mp3
+		rm -r $tempsounddir/faded/*.wav
 
-		sndfilename="${contexts[$idx]}-`date +%Y-%m-%d -d 'yesterday'`.mp3"
-		echo "    creating $sndfilename"
+		echo "    normalizing, audio compressing, trimming and fading $sndfilename.wav"
 		# TODO
 		videolength=115
-		sox -q $tempsounddir/mixed/$mixwith.mp3 $tempsounddir/$sndfilename norm compand 0.3,1 6:-70,-60,-20 -5 -90 0.2 fade t 5 $videolength
+		echo "      video length is $videolength seconds"
+		reducegain=-5
+		if [ ! -z "${contextsoundgain[$idx]}" ]; then
+			reducegain=-${contextsoundgain[$idx]}
+			reducegain=$((reducegain-5))
+		fi
+		sox -q "$tempsounddir/$sndfilename.wav" "$tempsounddir/$sndfilename-tmp.wav" norm compand 0.3,1 6:-70,-60,-20 $reducegain -60 0.2 fade t 5 $videolength
+		sox -q "$tempsounddir/$sndfilename-tmp.wav" "$tempsounddir/$sndfilename.wav" norm
 
-		echo "    clearing $tempsounddir/mixed/"
-		rm -r $tempsounddir/mixed/*.mp3
+		echo "    creating $tempsounddir/$sndfilename.mp3 with lame"
+		$lame --quiet -S -b 320 -m s -q 0 $tempsounddir/$sndfilename.wav 2>/dev/null
+		sndfilename=$sndfilename.mp3
+
+		echo "    clearing $tempsounddir"
+		rm -r $tempsounddir/*.wav
+exit
 	fi
 
 	echo "  moving images from $save_path/${contexts[$idx]} to $tempimagesequencedir"
