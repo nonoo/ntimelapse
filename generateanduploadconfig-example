@@ -1,7 +1,15 @@
+# If testrun is 1, then it won't upload videos, and won't delete
+# source images and sounds.
+testrun=1
+
+# Path to the lame binary
+lame=/usr/bin/lame
+
 # Copy or rename this file to generateanduploadconfig
 contexts[0]=context01
 # If you want this context to get it's sound files from another directory,
-# specify this.
+# specify this. This way multiple contexts can use the same sound file
+# source directory.
 contextgetsoundfromsubdir[0]=context01-snd
 contexttitles[0]="Context01 title"
 contextdescriptions[0]="Context01 description"
@@ -12,7 +20,8 @@ contextyoutubelocations[0]="47.67599,18.4935"
 contextyoutubeplaylistids[0]="aGggifGHJI54MGHNhthsI5z55ijGHIGHNhAT5"
 
 contexts[1]=context02
-contextsoundgain[1]=20
+# Specify this to apply gain to the individual recorded sounds before mixing.
+contextsoundgain[1]=10
 contexttitles[1]="Context02 title"
 contextdescriptions[1]="Context02 description"
 contextyoutubeemails[1]=context02@email.com
