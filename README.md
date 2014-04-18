@@ -4,6 +4,8 @@ ntimelapse
 Scripts for processing webcam and sound uploads, generating and uploading
 timelapse videos to YouTube.
 
+You can see the scripts in action on [webcam.nonoo.hu](http://webcam.nonoo.hu).
+
 ## Usage
 
 There are two main components:
