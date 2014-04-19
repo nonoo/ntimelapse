@@ -6,6 +6,8 @@ timelapse videos to YouTube.
 
 You can see the scripts in action on [webcam.nonoo.hu](http://webcam.nonoo.hu).
 
+The uploader script can be found [here](https://github.com/nonoo/ntimelapse-upload).
+
 ## Usage
 
 There are two main components:
