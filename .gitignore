@@ -3,5 +3,7 @@ upload-config.inc.php
 *.mp3
 overlays
 generateanduploadconfig
+generateanduploadconfig-old
 log
 index.php
+credentials

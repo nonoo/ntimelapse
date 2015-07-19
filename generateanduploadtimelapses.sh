@@ -159,19 +159,14 @@ for idx in ${!contexts[*]}; do
 
 	if [ -f "$videooutputdir/$videofilename" ]; then
 		echo "  uploading $videooutputdir/$videofilename"
-		videourl=`$youtubeuploadbinary --email="${contextyoutubeemails[$idx]}" \
-			--password="${contextyoutubepasswords[$idx]}" \
+		videourl=`$youtubeuploadbinary \
+			--credentials-file=$youtubeuploadcredentialsdir/credential-${contexts[$idx]}.json \
+			--client-secrets=$youtubeuploadcredentialsdir/secret-${contexts[$idx]}.json \
 			--title="${contexttitles[$idx]}" \
-			--category="Travel" \
 			--description="${contextyoutubedescriptions[$idx]}" \
-			--keywords="${contextyoutubekeywords[$idx]}" \
+			--tags="${contextyoutubekeywords[$idx]}" \
 			--location="${contextyoutubelocations[$idx]}" \
 			"$videooutputdir/$videofilename"`
-		echo "  adding $videourl to the context playlist"
-		$youtubeuploadbinary --email=${contextyoutubeemails[$idx]} \
-			--password=${contextyoutubepasswords[$idx]} \
-			--add-to-playlist="http://gdata.youtube.com/feeds/api/playlists/${contextyoutubeplaylistids[$idx]}" \
-			$videourl
 		rm -f "$videooutputdir/$videofilename"
 	fi
 done

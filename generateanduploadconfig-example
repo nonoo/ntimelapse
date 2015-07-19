@@ -13,22 +13,16 @@ contexts[0]=context01
 contextgetsoundfromsubdir[0]=context01-snd
 contexttitles[0]="Context01 title"
 contextdescriptions[0]="Context01 description"
-contextyoutubeemails[0]=context01@email.com
-contextyoutubepasswords[0]=context01pass
 contextyoutubekeywords[0]="webcam, timelapse"
-contextyoutubelocations[0]="47.67599,18.4935"
-contextyoutubeplaylistids[0]="aGggifGHJI54MGHNhthsI5z55ijGHIGHNhAT5"
+contextyoutubelocations[0]="latitude=47.67599,longitude=18.4935"
 
 contexts[1]=context02
 # Specify this to apply gain to the individual recorded sounds before mixing.
 contextsoundgain[1]=10
 contexttitles[1]="Context02 title"
 contextdescriptions[1]="Context02 description"
-contextyoutubeemails[1]=context02@email.com
-contextyoutubepasswords[1]=context02pass
 contextyoutubekeywords[1]="webcam, timelapse"
-contextyoutubelocations[1]="47.67599,18.4935"
-contextyoutubeplaylistids[0]="gjg5oHOMHIai5ij8gaI5gmgiiotgjtrGSAJI"
+contextyoutubelocations[1]="latitude=47.67599,longitude=18.4935"
 
 # Where the context subdirs are stored.
 save_path=$scriptdir
@@ -39,8 +33,9 @@ tempimagesequencedir="/tmp/ntimelapse-imgseq"
 # Where to store sound files temporarily for mixing.
 tempsounddir="/tmp/ntimelapse-sndseq"
 
-# Path of youtube-upload, which you can download from https://code.google.com/p/youtube-upload/
+# Path of youtube-upload, which you can download from https://github.com/tokland/youtube-upload
 youtubeuploadbinary=/usr/local/bin/youtube-upload
+youtubeuploadcredentialsdir=/var/www/ntimelapse.nonoo.hu/credentials/
 
 logfile=$scriptdir/generateandupload.log
 nlogrotatepath=/opt/nlogrotate
