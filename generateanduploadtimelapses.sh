@@ -106,7 +106,7 @@ for idx in ${!contexts[*]}; do
 		for imgfile in `ls $save_path/${contexts[$idx]}/*.jpg`; do
 			i=$((i + 1))
 		done
-		videolength=$((i / 25))
+		videolength=$((i / ${contextfps[$idx]}))
 		echo "      video length is $videolength seconds"
 
 		echo "    normalizing, audio compressing, trimming and fading $tempsounddir/$contextmixedsndfile"
@@ -138,12 +138,12 @@ for idx in ${!contexts[*]}; do
 	videofilename="${contexts[$idx]}-`date +%Y-%m-%d -d 'yesterday'`.avi"
 	if [ -e "$tempsounddir/final.mp3" ]; then
 		echo "  creating $videofilename with sound"
-		ffmpeg -i $tempimagesequencedir/%05d.jpg -i "$tempsounddir/final.mp3" -vcodec mpeg4 -vb 10000000 -r 25 -acodec copy -f avi -y $videooutputdir/$videofilename &>/dev/null
+		ffmpeg -i $tempimagesequencedir/%05d.jpg -i "$tempsounddir/final.mp3" -vcodec mpeg4 -vb 10000000 -r ${contextfps[$idx]} -acodec copy -f avi -y $videooutputdir/$videofilename &>/dev/null
 		rm -f "$tempsounddir/final.mp3"
 		result=$?
 	else
 		echo "  creating $videofilename without sound"
-		ffmpeg -i $tempimagesequencedir/%05d.jpg -vcodec mpeg4 -vb 10000000 -r 25 -an -f avi -y $videooutputdir/$videofilename &>/dev/null
+		ffmpeg -i $tempimagesequencedir/%05d.jpg -vcodec mpeg4 -vb 10000000 -r ${contextfps[$idx]} -an -f avi -y $videooutputdir/$videofilename &>/dev/null
 		result=$?
 	fi
 	if [ $result -ne 0 ]; then

@@ -7,6 +7,7 @@ lame=/usr/bin/lame
 
 # Copy or rename this file to generateanduploadconfig
 contexts[0]=context01
+contextfps[0]=25
 # If you want this context to get it's sound files from another directory,
 # specify this. This way multiple contexts can use the same sound file
 # source directory.
@@ -17,6 +18,7 @@ contextyoutubekeywords[0]="webcam, timelapse"
 contextyoutubelocations[0]="latitude=47.67599,longitude=18.4935"
 
 contexts[1]=context02
+contextfps[1]=10
 # Specify this to apply gain to the individual recorded sounds before mixing.
 contextsoundgain[1]=10
 contexttitles[1]="Context02 title"
