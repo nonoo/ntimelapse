@@ -138,16 +138,16 @@ for idx in ${!contexts[*]}; do
 	videofilename="${contexts[$idx]}-`date +%Y-%m-%d -d 'yesterday'`.avi"
 	if [ -e "$tempsounddir/final.mp3" ]; then
 		echo "  creating $videofilename with sound"
-		ffmpeg -i $tempimagesequencedir/%05d.jpg -i "$tempsounddir/final.mp3" -vcodec mpeg4 -vb 10000000 -r ${contextfps[$idx]} -acodec copy -f avi -y $videooutputdir/$videofilename &>/dev/null
+		$ffmpeg -i $tempimagesequencedir/%05d.jpg -i "$tempsounddir/final.mp3" -vcodec mpeg4 -vb 10000000 -r ${contextfps[$idx]} -acodec copy -f avi -y $videooutputdir/$videofilename &>/dev/null
 		rm -f "$tempsounddir/final.mp3"
 		result=$?
 	else
 		echo "  creating $videofilename without sound"
-		ffmpeg -i $tempimagesequencedir/%05d.jpg -vcodec mpeg4 -vb 10000000 -r ${contextfps[$idx]} -an -f avi -y $videooutputdir/$videofilename &>/dev/null
+		$ffmpeg -i $tempimagesequencedir/%05d.jpg -vcodec mpeg4 -vb 10000000 -r ${contextfps[$idx]} -an -f avi -y $videooutputdir/$videofilename &>/dev/null
 		result=$?
 	fi
 	if [ $result -ne 0 ]; then
-		echo "  ffmpeg error"
+		echo "  ffmpeg ($ffmpeg) error"
 	fi
 
 	echo "  clearing $tempimagesequencedir"

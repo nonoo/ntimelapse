@@ -4,6 +4,8 @@ testrun=1
 
 # Path to the lame binary
 lame=/usr/bin/lame
+# Path to the ffmpeg/avconv binary
+ffmpeg=/usr/bin/avconv
 
 # Copy or rename this file to generateanduploadconfig
 contexts[0]=context01
