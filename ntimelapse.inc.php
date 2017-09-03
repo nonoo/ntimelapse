@@ -42,21 +42,17 @@
 
 		if (!array_key_exists($contextid, $tempdata_mysql_querys))
 			return;
-
-		$mysqlconn = mysql_connect($tempdata_mysql_hosts[$contextid], $tempdata_mysql_users[$contextid], $tempdata_mysql_passwords[$contextid]);
-		if (!$mysqlconn)
+		$mysqlconn = new mysqli($tempdata_mysql_hosts[$contextid], $tempdata_mysql_users[$contextid], $tempdata_mysql_passwords[$contextid], $tempdata_mysql_dbs[$contextid]);
+		if ($mysqlconn->connect_error)
 			return;
-		$mysqldb = mysql_select_db($tempdata_mysql_dbs[$contextid]);
-		if (!$mysqldb)
-			return;
-		$res = mysql_query($tempdata_mysql_querys[$contextid]);
+		$res = $mysqlconn->query($tempdata_mysql_querys[$contextid]);
 		if (!$res)
 			return;
-		$row = mysql_fetch_array($res, MYSQL_NUM);
+		$row = $res->fetch_row();
 		if (!$row || !isset($row[0]))
 			return;
-		mysql_free_result($res);
-		mysql_close($mysqlconn);
+		$res->free();
+		$mysqlconn->close();
 		return sprintf($tempdata_format, $row[0]);
 	}
 ?>
